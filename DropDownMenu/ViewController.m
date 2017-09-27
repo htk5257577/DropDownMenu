@@ -10,9 +10,10 @@
 #import "DropDownMenuManager.h"
 
 
-@interface ViewController ()<UITableViewDelegate ,UITableViewDataSource>;
+@interface ViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, retain)NSArray * dataSource;
+@property (nonatomic, retain)NSArray * dataSource2;
 @property (nonatomic, retain)DropDownMenuManager *manager;
 @end
 
@@ -22,7 +23,6 @@
 -(DropDownMenuManager *)manager{
     if (!_manager) {
         _manager = [[DropDownMenuManager alloc] init];
-        _manager.tableViewDelegate = self;
     }
     return _manager;
 }
@@ -34,40 +34,42 @@
     return _dataSource;
 }
 
+-(NSArray *)dataSource2{
+    if (!_dataSource2) {
+        _dataSource2 = @[@"上海",@"北京",@"杭州",@"武汉"];
+    }
+    return _dataSource2;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.textField.delegate = self;
 }
 
 - (IBAction)onButtonClick:(UIButton *)button {
+    self.manager.dataSource = self.dataSource;
     [self.manager showDropDownMenuWithTargetView:button];
+    self.manager.cellDidSelectBlock = ^(NSArray *dataSource, NSInteger row) {
+        [button setTitle:dataSource[row] forState:UIControlStateNormal];
+    };
+}
+
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    self.manager.dataSource = self.dataSource2;
+    [self.manager showDropDownMenuWithTargetView:textField];
+    self.manager.cellDidSelectBlock = ^(NSArray *dataSource, NSInteger row) {
+        textField.text = dataSource[row];
+    };
+    return NO;
 }
 
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.dataSource.count;
-}
-
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
-    cell.textLabel.text = self.dataSource[indexPath.row];
-    return cell;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.button setTitle:self.dataSource[indexPath.row] forState:UIControlStateNormal];
-    [self.manager dismissDropDownMenu];
-}
 
 
 
