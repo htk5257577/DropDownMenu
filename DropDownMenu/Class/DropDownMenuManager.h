@@ -12,7 +12,6 @@
 
 @property (nonatomic, retain) id<UITableViewDelegate,UITableViewDataSource> tableViewDelegate;
 
--(instancetype)initWithView:(UIView*)view;
--(void)showDropDownMenu;
+-(void)showDropDownMenuWithTargetView:(UIView*)targetView;
 -(void)dismissDropDownMenu;
 @end

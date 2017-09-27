@@ -21,7 +21,7 @@
 
 -(DropDownMenuManager *)manager{
     if (!_manager) {
-        _manager = [[DropDownMenuManager alloc] initWithView:self.button];
+        _manager = [[DropDownMenuManager alloc] init];
         _manager.tableViewDelegate = self;
     }
     return _manager;
@@ -39,7 +39,7 @@
 }
 
 - (IBAction)onButtonClick:(UIButton *)button {
-    [self.manager showDropDownMenu];
+    [self.manager showDropDownMenuWithTargetView:button];
 }
 
 
