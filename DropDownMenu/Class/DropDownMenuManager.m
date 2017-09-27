@@ -14,7 +14,6 @@ static NSInteger CellHeight = 40;
 static NSString *CellIdentifier = @"DefalutCell";
 
 @interface DropDownMenuManager ()<UIGestureRecognizerDelegate,UITableViewDelegate ,UITableViewDataSource>
-@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) UIView *coverView;
 @property (nonatomic, retain) UIView *targetView;
 @property (nonatomic, assign) NSInteger selectIndex;
@@ -32,6 +31,13 @@ static NSString *CellIdentifier = @"DefalutCell";
     return self;
 }
 
+-(UITableView *)tableView{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] init];
+    }
+    return _tableView;
+}
+
 -(NSMutableArray *)selectIndexArray{
     if (!_selectIndexArray) {
         _selectIndexArray = [NSMutableArray array];
@@ -40,6 +46,9 @@ static NSString *CellIdentifier = @"DefalutCell";
 }
 
 -(void)setDataSource:(NSArray *)dataSource{
+    if (_dataSource == dataSource) {
+        return;
+    }
     _dataSource= dataSource;
     [self resetSelectState];
 }
@@ -90,9 +99,8 @@ static NSString *CellIdentifier = @"DefalutCell";
     tap.delegate = self;
     
     CGRect rect=[targetView convertRect:targetView.bounds toView:window];
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, 0) style:UITableViewStylePlain];
+    self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, 0);
     self.tableView.layer.borderWidth = 1;
-    self.tableView.layer.borderColor = [[UIColor grayColor] CGColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.coverView addSubview:self.tableView];
@@ -149,6 +157,8 @@ static NSString *CellIdentifier = @"DefalutCell";
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
+        cell.textLabel.textColor = [UIColor colorWithRed:21/255.0 green:126/255.0 blue:256/255.0 alpha:1];
+        cell.textLabel.font = [UIFont systemFontOfSize:14];
     }
     if ([self isRowSelected:indexPath.row]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;

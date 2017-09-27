@@ -16,8 +16,7 @@ typedef NS_ENUM(NSInteger, Mode)
 
 @interface DropDownMenuManager : NSObject
 @property (nonatomic, retain) NSArray *dataSource;
-
-
+@property (nonatomic, retain) UITableView *tableView;
 /**
   tableViewCell选中回调，dataSource为tableView当前的数据源，单选模式下selectIndex为tableView当前选中的行号，多选模式下selectIndexArray为tableView当前选中的行号数组
  */
