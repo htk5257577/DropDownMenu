@@ -13,7 +13,7 @@
 		50EF0A6E1F78F06900F75AFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50EF0A6C1F78F06900F75AFF /* Main.storyboard */; };
 		50EF0A701F78F06900F75AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50EF0A6F1F78F06900F75AFF /* Assets.xcassets */; };
 		50EF0A731F78F06900F75AFF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50EF0A711F78F06900F75AFF /* LaunchScreen.storyboard */; };
-		50EF0F3F1F7A3F3200F75AFF /* DropDownMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF0F3E1F7A3F3200F75AFF /* DropDownMenuManager.m */; };
+		50EF0F681F7B718E00F75AFF /* DropDownMenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EF0F671F7B718E00F75AFF /* DropDownMenuManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		50EF0A6F1F78F06900F75AFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		50EF0A721F78F06900F75AFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		50EF0A741F78F06900F75AFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		50EF0F3D1F7A3F3200F75AFF /* DropDownMenuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownMenuManager.h; sourceTree = "<group>"; };
-		50EF0F3E1F7A3F3200F75AFF /* DropDownMenuManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownMenuManager.m; sourceTree = "<group>"; };
+		50EF0F661F7B718E00F75AFF /* DropDownMenuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownMenuManager.h; sourceTree = "<group>"; };
+		50EF0F671F7B718E00F75AFF /* DropDownMenuManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownMenuManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +65,7 @@
 				50EF0A671F78F06900F75AFF /* AppDelegate.m */,
 				50EF0A691F78F06900F75AFF /* ViewController.h */,
 				50EF0A6A1F78F06900F75AFF /* ViewController.m */,
-				50EF0F3D1F7A3F3200F75AFF /* DropDownMenuManager.h */,
-				50EF0F3E1F7A3F3200F75AFF /* DropDownMenuManager.m */,
+				50EF0F651F7B718E00F75AFF /* Class */,
 				50EF0A6C1F78F06900F75AFF /* Main.storyboard */,
 				50EF0A6F1F78F06900F75AFF /* Assets.xcassets */,
 				50EF0A711F78F06900F75AFF /* LaunchScreen.storyboard */,
@@ -82,6 +81,15 @@
 				50EF0A641F78F06900F75AFF /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50EF0F651F7B718E00F75AFF /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				50EF0F661F7B718E00F75AFF /* DropDownMenuManager.h */,
+				50EF0F671F7B718E00F75AFF /* DropDownMenuManager.m */,
+			);
+			path = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,7 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50EF0A6B1F78F06900F75AFF /* ViewController.m in Sources */,
-				50EF0F3F1F7A3F3200F75AFF /* DropDownMenuManager.m in Sources */,
+				50EF0F681F7B718E00F75AFF /* DropDownMenuManager.m in Sources */,
 				50EF0A681F78F06900F75AFF /* AppDelegate.m in Sources */,
 				50EF0A651F78F06900F75AFF /* main.m in Sources */,
 			);
