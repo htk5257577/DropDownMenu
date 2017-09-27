@@ -11,19 +11,59 @@
 static double AnimationContant = 0.3;
 static NSInteger MaxHeight = 400;
 static NSInteger CellHeight = 40;
+static NSString *CellIdentifier = @"DefalutCell";
 
 @interface DropDownMenuManager ()<UIGestureRecognizerDelegate,UITableViewDelegate ,UITableViewDataSource>
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) UIView *coverView;
 @property (nonatomic, retain) UIView *targetView;
+@property (nonatomic, assign) NSInteger selectIndex;
+@property (nonatomic, retain) NSMutableArray *selectIndexArray;
+@property (nonatomic, assign) Mode mode;
 @end
 
 @implementation DropDownMenuManager
 
+-(instancetype)initWithMode:(Mode)mode dataSource:(NSArray*)dataSource{
+    if ([super init]) {
+        _mode = mode;
+        _dataSource = dataSource;
+    }
+    return self;
+}
 
--(void)setDataSource:(NSArray *)dataSource{
-    _dataSource = dataSource;
+-(NSMutableArray *)selectIndexArray{
+    if (!_selectIndexArray) {
+        _selectIndexArray = [NSMutableArray array];
+    }
+    return _selectIndexArray;
+}
+
+-(void)selectCellIndex:(NSInteger)row{
+    if (self.mode == Single) {
+        self.selectIndex = row;
+        [self dismissDropDownMenu];
+    }else{
+        if ([self.selectIndexArray containsObject:[NSNumber numberWithInteger:row]]) {
+            [self.selectIndexArray removeObject:[NSNumber numberWithInteger:row]];
+        }else{
+            [self.selectIndexArray addObject:[NSNumber numberWithInteger:row]];
+        }
+    }
     [self.tableView reloadData];
+}
+
+-(BOOL)isRowSelected:(NSInteger)row{
+    if (self.mode == Single) {
+        if (self.selectIndex == row) {
+            return YES;
+        }
+    }else{
+        if ([self.selectIndexArray containsObject:[NSNumber numberWithInteger:row]]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 -(void)showDropDownMenuWithTargetView:(UIView*)targetView{
@@ -84,22 +124,32 @@ static NSInteger CellHeight = 40;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    UITableViewCell *cell;
     if (self.cellForRowBlock) {
-        return  self.cellForRowBlock(self.dataSource, indexPath.row);
+        cell = self.cellForRowBlock(self.dataSource, indexPath.row);
+        
     }else{
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
-        cell.textLabel.text = self.dataSource[indexPath.row];
-        return cell;
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
     }
-    
+    if ([self isRowSelected:indexPath.row]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self selectCellIndex:indexPath.row];
     if (self.cellDidSelectBlock) {
-        self.cellDidSelectBlock(self.dataSource, indexPath.row);
+        self.cellDidSelectBlock(self.dataSource, self.selectIndex, self.selectIndexArray);
     }
-    [self dismissDropDownMenu];
+    
 }
 
 @end

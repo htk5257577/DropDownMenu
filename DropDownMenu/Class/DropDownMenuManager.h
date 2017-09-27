@@ -8,14 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, Mode)
+{
+    Single = 0,
+    Mutiple
+};
+
 @interface DropDownMenuManager : NSObject
 @property (nonatomic, retain) NSArray *dataSource;
 
 
 /**
-  tableViewCell选中回调，dataSource为tableView当前的数据源，row为tableView当前选中的行号
+  tableViewCell选中回调，dataSource为tableView当前的数据源，单选模式下selectIndex为tableView当前选中的行号，多选模式下selectIndexArray为tableView当前选中的行号数组
  */
-@property (nonatomic ,copy) void (^cellDidSelectBlock) (NSArray *dataSource, NSInteger row);
+@property (nonatomic ,copy) void (^cellDidSelectBlock) (NSArray *dataSource, NSInteger selectIndex, NSArray<NSNumber *>* selectIndexArray);
 
 
 /**
@@ -25,6 +31,7 @@
 @property (nonatomic ,copy) UITableViewCell * (^cellForRowBlock) (NSArray *dataSource, NSInteger row);
 
 
+-(instancetype)initWithMode:(Mode)mode dataSource:(NSArray*)dataSource;
 
 -(void)showDropDownMenuWithTargetView:(UIView*)targetView;
 @end
