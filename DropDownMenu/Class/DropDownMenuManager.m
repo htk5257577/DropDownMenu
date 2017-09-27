@@ -39,6 +39,20 @@ static NSString *CellIdentifier = @"DefalutCell";
     return _selectIndexArray;
 }
 
+-(void)setDataSource:(NSArray *)dataSource{
+    _dataSource= dataSource;
+    [self resetSelectState];
+}
+
+-(void)resetSelectState{
+    if (self.mode == Single) {
+        self.selectIndex = 0;
+    }else{
+        [self.selectIndexArray removeAllObjects];
+    }
+    [self.tableView reloadData];
+}
+
 -(void)selectCellIndex:(NSInteger)row{
     if (self.mode == Single) {
         self.selectIndex = row;
