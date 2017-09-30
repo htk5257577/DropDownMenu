@@ -27,6 +27,7 @@ static NSString *CellIdentifier = @"DefalutCell";
     if ([super init]) {
         _mode = mode;
         _dataSource = dataSource;
+        _checkMark = YES;
     }
     return self;
 }
@@ -34,6 +35,9 @@ static NSString *CellIdentifier = @"DefalutCell";
 -(UITableView *)tableView{
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
+        _tableView.layer.borderWidth = 1;
+        _tableView.layer.borderColor = [[UIColor colorWithRed:21/255.0 green:126/255.0 blue:256/255.0 alpha:1] CGColor];
+        _tableView.layer.cornerRadius = 5;
     }
     return _tableView;
 }
@@ -100,9 +104,9 @@ static NSString *CellIdentifier = @"DefalutCell";
     
     CGRect rect=[targetView convertRect:targetView.bounds toView:window];
     self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, 0);
-    self.tableView.layer.borderWidth = 1;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
     [self.coverView addSubview:self.tableView];
 
     [UIView animateWithDuration:AnimationContant animations:^{
@@ -158,13 +162,17 @@ static NSString *CellIdentifier = @"DefalutCell";
         }
         cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
         cell.textLabel.textColor = [UIColor colorWithRed:21/255.0 green:126/255.0 blue:256/255.0 alpha:1];
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.font = [UIFont systemFontOfSize:15];
     }
-    if ([self isRowSelected:indexPath.row]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+    
+    if (self.checkMark) {
+        if ([self isRowSelected:indexPath.row]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }
+    
     return cell;
 }
 

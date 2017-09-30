@@ -16,7 +16,18 @@ typedef NS_ENUM(NSInteger, Mode)
 
 @interface DropDownMenuManager : NSObject
 @property (nonatomic, retain) NSArray *dataSource;
+
+
+/**
+ 可以设置tableView的样式 包括borderColor borderWith cornerRadius等
+ */
 @property (nonatomic, retain) UITableView *tableView;
+
+
+/**
+ 是否需要cell选中标记 默认为YES
+ */
+@property (nonatomic, assign) BOOL checkMark;
 /**
   tableViewCell选中回调，dataSource为tableView当前的数据源，单选模式下selectIndex为tableView当前选中的行号，多选模式下selectIndexArray为tableView当前选中的行号数组
  */

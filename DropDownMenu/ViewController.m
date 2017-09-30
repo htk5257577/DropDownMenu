@@ -55,7 +55,7 @@
 }
 
 - (IBAction)onButtonClick:(UIButton *)button {
-    self.manager.dataSource = self.dataSource;
+    self.manager.checkMark = NO;
     [self.manager showDropDownMenuWithTargetView:button];
     self.manager.cellDidSelectBlock = ^(NSArray *dataSource, NSInteger selectIndex, NSArray<NSNumber *>* selectIndexArray) {
         [button setTitle:dataSource[selectIndex] forState:UIControlStateNormal];
@@ -64,7 +64,6 @@
 
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    self.manager2.dataSource = self.dataSource2;
     [self.manager2 showDropDownMenuWithTargetView:textField];
     self.manager2.cellDidSelectBlock = ^(NSArray *dataSource, NSInteger selectIndex, NSArray<NSNumber *>* selectIndexArray) {
         textField.text = nil;
