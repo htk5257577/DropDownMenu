@@ -10,8 +10,8 @@
 
 typedef NS_ENUM(NSInteger, Mode)
 {
-    Single = 0,
-    Mutiple
+    DropDownMenuSingle = 0,
+    DropDownMenuMutiple
 };
 
 @interface DropDownMenuManager : NSObject

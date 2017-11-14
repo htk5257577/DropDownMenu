@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   }
 
   s.homepage     = "https://github.com/htk5257577/DropDownMenu"
-  s.license      = "MIT "
+  s.license      = "MIT"
   s.author       = { "htk5257577" => "280071019@qq.com" }
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/htk5257577/DropDownMenu.git", :tag => "#{s.version}" }

@@ -58,7 +58,7 @@ static NSString *CellIdentifier = @"DefalutCell";
 }
 
 -(void)resetSelectState{
-    if (self.mode == Single) {
+    if (self.mode == DropDownMenuSingle) {
         self.selectIndex = 0;
     }else{
         [self.selectIndexArray removeAllObjects];
@@ -67,7 +67,7 @@ static NSString *CellIdentifier = @"DefalutCell";
 }
 
 -(void)selectCellIndex:(NSInteger)row{
-    if (self.mode == Single) {
+    if (self.mode == DropDownMenuSingle) {
         self.selectIndex = row;
         [self dismissDropDownMenu];
     }else{
@@ -81,7 +81,7 @@ static NSString *CellIdentifier = @"DefalutCell";
 }
 
 -(BOOL)isRowSelected:(NSInteger)row{
-    if (self.mode == Single) {
+    if (self.mode == DropDownMenuSingle) {
         if (self.selectIndex == row) {
             return YES;
         }

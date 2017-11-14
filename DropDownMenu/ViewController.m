@@ -23,14 +23,14 @@
 
 -(DropDownMenuManager *)manager{
     if (!_manager) {
-        _manager = [[DropDownMenuManager alloc] initWithMode:Single dataSource:self.dataSource];
+        _manager = [[DropDownMenuManager alloc] initWithMode:DropDownMenuSingle dataSource:self.dataSource];
     }
     return _manager;
 }
 
 -(DropDownMenuManager *)manager2{
     if (!_manager2) {
-        _manager2 = [[DropDownMenuManager alloc] initWithMode:Mutiple dataSource:self.dataSource2];
+        _manager2 = [[DropDownMenuManager alloc] initWithMode:DropDownMenuMutiple dataSource:self.dataSource2];
     }
     return _manager2;
 }
