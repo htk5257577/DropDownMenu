@@ -19,6 +19,7 @@ static NSString *CellIdentifier = @"DefalutCell";
 @property (nonatomic, assign) NSInteger selectIndex;
 @property (nonatomic, retain) NSMutableArray *selectIndexArray;
 @property (nonatomic, assign) Mode mode;
+@property (nonatomic, assign) BOOL isShow;
 @end
 
 @implementation DropDownMenuManager
@@ -28,6 +29,7 @@ static NSString *CellIdentifier = @"DefalutCell";
         _mode = mode;
         _dataSource = dataSource;
         _checkMark = YES;
+        _isShow = NO;
     }
     return self;
 }
@@ -36,7 +38,6 @@ static NSString *CellIdentifier = @"DefalutCell";
     if (!_tableView) {
         _tableView = [[UITableView alloc] init];
         _tableView.layer.borderWidth = 1;
-        _tableView.layer.borderColor = [[UIColor colorWithRed:21/255.0 green:126/255.0 blue:256/255.0 alpha:1] CGColor];
         _tableView.layer.cornerRadius = 5;
     }
     return _tableView;
@@ -59,7 +60,7 @@ static NSString *CellIdentifier = @"DefalutCell";
 
 -(void)resetSelectState{
     if (self.mode == DropDownMenuSingle) {
-        self.selectIndex = 0;
+        self.selectIndex = -1;
     }else{
         [self.selectIndexArray removeAllObjects];
     }
@@ -95,23 +96,29 @@ static NSString *CellIdentifier = @"DefalutCell";
 
 -(void)showDropDownMenuWithTargetView:(UIView*)targetView{
     self.targetView = targetView;
-    self.coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,  [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    [window addSubview:self.coverView];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [self.coverView addGestureRecognizer:tap];
-    tap.delegate = self;
+    if (self.dataSource.count > 0 && !self.isShow) {
+        self.coverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,  [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        [window addSubview:self.coverView];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        [self.coverView addGestureRecognizer:tap];
+        tap.delegate = self;
+        
+        CGRect rect=[targetView convertRect:targetView.bounds toView:window];
+        self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, 0);
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.layer.borderColor = self.targetView.layer.borderColor;
+        [self.coverView addSubview:self.tableView];
+        
+        [UIView animateWithDuration:AnimationContant animations:^{
+            self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, [self caculateTableViewHeight:rect]);
+        }];
+        self.isShow = YES;
+    }
+    [self.tableView reloadData];
     
-    CGRect rect=[targetView convertRect:targetView.bounds toView:window];
-    self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, 0);
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     
-    [self.coverView addSubview:self.tableView];
-
-    [UIView animateWithDuration:AnimationContant animations:^{
-        self.tableView.frame = CGRectMake(rect.origin.x, rect.origin.y + rect.size.height, rect.size.width, [self caculateTableViewHeight:rect]);
-    }];
 }
 
 
@@ -119,7 +126,7 @@ static NSString *CellIdentifier = @"DefalutCell";
     NSInteger screenMaxHeight = [UIScreen mainScreen].bounds.size.height - (rect.origin.y + rect.size.height) - 20;
     NSInteger actualMaxHeight = screenMaxHeight < MaxHeight ? screenMaxHeight : MaxHeight;
     NSInteger totalHeight = CellHeight * self.dataSource.count;
-
+    
     return totalHeight < actualMaxHeight ? totalHeight : actualMaxHeight;
 }
 
@@ -128,8 +135,24 @@ static NSString *CellIdentifier = @"DefalutCell";
 }
 
 -(void)dismissDropDownMenu{
-    [self.coverView removeFromSuperview];
-    self.coverView = nil;
+    if (self.isShow) {
+        [self.coverView removeFromSuperview];
+        self.coverView = nil;
+        self.isShow = NO;
+    }
+    
+}
+
+- (UIFont*)fontOfView:(UIView *)view{
+    if ([view isMemberOfClass:[UILabel class]]) {
+        return ((UILabel *)view).font;
+    }else if([view isMemberOfClass:[UITextField class]]){
+        return ((UITextField *)view).font;
+    }else if([view isMemberOfClass:[UIButton class]]){
+        return ((UIButton *)view).titleLabel.font;
+    }else{
+        return [UIFont systemFontOfSize:15];
+    }
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -153,16 +176,14 @@ static NSString *CellIdentifier = @"DefalutCell";
     UITableViewCell *cell;
     if (self.cellForRowBlock) {
         cell = self.cellForRowBlock(self.dataSource, indexPath.row);
-        
     }else{
-        
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         cell.textLabel.text = [self.dataSource objectAtIndex:indexPath.row];
-        cell.textLabel.textColor = [UIColor colorWithRed:21/255.0 green:126/255.0 blue:256/255.0 alpha:1];
-        cell.textLabel.font = [UIFont systemFontOfSize:15];
+        cell.textLabel.textColor = [UIColor colorWithCGColor:self.targetView.layer.borderColor];
+        cell.textLabel.font = [self fontOfView:self.targetView];
     }
     
     if (self.checkMark) {

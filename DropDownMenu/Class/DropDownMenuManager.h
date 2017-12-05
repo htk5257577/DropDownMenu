@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, Mode)
  */
 @property (nonatomic, assign) BOOL checkMark;
 /**
-  tableViewCell选中回调，dataSource为tableView当前的数据源，单选模式下selectIndex为tableView当前选中的行号，多选模式下selectIndexArray为tableView当前选中的行号数组
+ tableViewCell选中回调，dataSource为tableView当前的数据源，单选模式下selectIndex为tableView当前选中的行号，多选模式下selectIndexArray为tableView当前选中的行号数组
  */
 @property (nonatomic ,copy) void (^cellDidSelectBlock) (NSArray *dataSource, NSInteger selectIndex, NSArray<NSNumber *>* selectIndexArray);
 
@@ -41,7 +41,10 @@ typedef NS_ENUM(NSInteger, Mode)
 @property (nonatomic ,copy) UITableViewCell * (^cellForRowBlock) (NSArray *dataSource, NSInteger row);
 
 
--(instancetype)initWithMode:(Mode)mode dataSource:(NSArray*)dataSource;
+- (instancetype)initWithMode:(Mode)mode dataSource:(NSArray*)dataSource;
 
--(void)showDropDownMenuWithTargetView:(UIView*)targetView;
+- (void)showDropDownMenuWithTargetView:(UIView*)targetView;
+
+- (void)dismissDropDownMenu;
 @end
+
